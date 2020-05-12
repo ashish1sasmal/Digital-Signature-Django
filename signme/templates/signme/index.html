@@ -1,0 +1,73 @@
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="{% static 'signme/js/sign.js' %}"></script>
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <title>Signature Pad Example</title>
+
+    <script>
+        $(document).ready(function()
+        {
+            $('#myCanvas').sign({
+                resetButton: $('#resetSign'),
+                lineWidth: 5,
+                height:300,
+                width:400
+            });
+        });
+    </script>
+    <style>
+    body { background-color: #fafafa; }
+        #myCanvas {
+            border:4px solid #444;
+            border-radius: 15px;
+            background-color: #fafafa;
+        }
+        .container { margin: 150px auto; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+
+
+
+
+    <form id="myForm" method="post">
+      {% csrf_token %}
+          <label for="username">Enter Your Name</label>
+          <input type="text" name="username" id="username" value=""><br>
+          <br>
+          <canvas id="myCanvas"></canvas><br><br>
+          <button type="button" name="button" onclick="save()">Save</button>
+          <input type="button" value="Reset" id='resetSign'>
+          <input type="hidden"  name='canva' id="my_hidden">
+    </form>
+</div>
+
+
+<script type="text/javascript">
+  function save(){
+    var canvas = document.getElementById("myCanvas");
+    var img    = canvas.toDataURL("image/png");
+    document.getElementById('my_hidden').value = img;
+
+    if (document.getElementById('username').value=="")
+    {
+      alert("Please Enter You Name");
+    }
+    else{
+    document.forms["myForm"].submit();
+    }
+  }
+
+</script>
+</body>
+</html>
