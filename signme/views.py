@@ -19,11 +19,14 @@ def home(request):
         # header, encoded = data_uri.split(",", 1)
         # data = b64decode(encoded)
         # print(request.FILES.get('file'))
+        print(data)
         d = Signuser(username=request.POST.get('username'),stamp=data)
         d.save()
+
         # with open("media/"+request.POST.get('username')+".jpg", "wb") as f:
         #     f.write(data)
         print('image save')
-        return HttpResponse('Signature Save Successfully!')
+        loc=str(d.stamp)
+        return render(request,'signme/index.html',{"loc":loc})
     else:
-        return render(request,'signme/index.html')
+        return render(request,'signme/index.html',{"loc":""})

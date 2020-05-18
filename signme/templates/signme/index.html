@@ -1,73 +1,81 @@
 {% load static %}
-
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="{% static 'signme/js/sign.js' %}"></script>
-    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-    <title>Signature Pad Example</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>jQuery UI Signature Basics</title>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">
+<link href="{% static 'signme/css/jquery.signature.css' %}" rel="stylesheet">
+<style>
+.kbw-signature { width: 400px; height: 200px; }
+</style>
+<!--[if IE]>
+<script src="excanvas.js"></script>
+<![endif]-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="{% static 'signme/js/jquery.signature.js' %}"></script>
+<script>
 
-    <script>
-        $(document).ready(function()
-        {
-            $('#myCanvas').sign({
-                resetButton: $('#resetSign'),
-                lineWidth: 5,
-                height:300,
-                width:400
-            });
-        });
-    </script>
-    <style>
-    body { background-color: #fafafa; }
-        #myCanvas {
-            border:4px solid #444;
-            border-radius: 15px;
-            background-color: #fafafa;
-        }
-        .container { margin: 150px auto; }
-    </style>
+$(function() {
+	var sig = $('#sig').signature();
+	$('#disable').click(function() {
+		var disable = $(this).text() === 'Disable';
+		$(this).text(disable ? 'Enable' : 'Disable');
+		sig.signature(disable ? 'disable' : 'enable');
+	});
+	$('#clear').click(function() {
+		sig.signature('clear');
+	});
+	$('#json').click(function() {
+		alert(sig.signature('toJSON'));
+	});
+	$('#svg').click(function() {
+		alert(sig.signature('toSVG'));
+	});
+});
+</script>
 </head>
 <body>
+<h1>jQuery UI Signature</h1>
 
-    <div class="container">
+<img src="media/{{loc}}" alt="">
 
-
-
-
-
+<br>
     <form id="myForm" method="post">
       {% csrf_token %}
-          <label for="username">Enter Your Name</label>
-          <input type="text" name="username" id="username" value=""><br>
-          <br>
-          <canvas id="myCanvas"></canvas><br><br>
+      <label for="username">Enter Your Name</label>
+      <input type="text" name="username" id="username" value=""><br><br>
+        <div id="sig"></div><br>
+        <p style="clear: both;">
+          <button type="button" id="disable">Disable</button>
+          <button type="button" id="clear">Clear</button>
+          <button type="button" id="json">To JSON</button>
+          <button type="button" id="svg">To SVG</button>
+        </p>
+
+          <br><br>
           <button type="button" name="button" onclick="save()">Save</button>
-          <input type="button" value="Reset" id='resetSign'>
           <input type="hidden"  name='canva' id="my_hidden">
     </form>
-</div>
 
 
-<script type="text/javascript">
-  function save(){
-    var canvas = document.getElementById("myCanvas");
-    var img    = canvas.toDataURL("image/png");
-    document.getElementById('my_hidden').value = img;
+    <script type="text/javascript">
 
-    if (document.getElementById('username').value=="")
-    {
-      alert("Please Enter You Name");
+    function save(){
+      var sig = document.getElementById('sig');
+      var canvas = sig.getElementsByTagName("canvas")[0];
+      var img    = canvas.toDataURL("image/png");
+      document.getElementById('my_hidden').value = img;
+
+      if (document.getElementById('username').value=="")
+      {
+        alert("Please Enter You Name");
+      }
+      else{
+      document.forms["myForm"].submit();
+      }
     }
-    else{
-    document.forms["myForm"].submit();
-    }
-  }
-
-</script>
+    </script>
 </body>
 </html>
