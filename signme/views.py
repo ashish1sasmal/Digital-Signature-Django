@@ -5,7 +5,7 @@ from django.core.files.base import ContentFile
 from django.http import HttpResponse
 import base64
 
-# Create your views here.
+
 def home(request):
     if request.method == "POST":
 
