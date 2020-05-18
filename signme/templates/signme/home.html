@@ -44,6 +44,18 @@
     <section>
       <div class="row">
         <div class="two-thirds column">
+
+          <form id="myForm" method="post">
+            {% csrf_token %}
+            <label for="username">Enter Your Name</label>
+            <input type="text" name="username" id="username" value=""><br><br>
+              <div id="sketchpad"></div><br>
+
+                <br><br>
+                <button type="button" name="button" onclick="save()">Save</button>
+                <input type="hidden"  name='canva' id="my_hidden">
+          </form>
+
           <div id="sketchpad"></div>
           <em>Try resizing the window!</em>
         </div>
@@ -65,45 +77,29 @@
       </div>
     </section>
 
-    <section>
-      <h3>Basic Usage</h3>
 
-<pre><code>var Sketchpad = require('responsive-sketchpad');
-
-// Initialize Sketchpad
-var el = document.getElementById('sketchpad');
-var pad = new Sketchpad(el, {
-    line: {
-        color: '#f44335',
-        size: 5
-    }
-});
-
-// Set line color
-pad.setLineColor('#f44336');
-
-// Set line size
-pad.setLineSize(10);
-
-// Undo
-pad.undo();
-
-// Redo
-pad.redo();
-
-// Clear canvas
-pad.clear();
-
-// Resize canvase
-pad.resize(newWidth);
-</code></pre>
-    </section>
   </div>
 
   <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script src="{% static 'signme/js/responsive-sketchpad.js' %}"></script>
   <script>
+
+  function save(){
+    var sig = document.getElementById('sketchpad');
+    var canvas = sig.getElementsByTagName("canvas")[0];
+    var img    = canvas.toDataURL("image/png");
+    document.getElementById('my_hidden').value = img;
+
+    if (document.getElementById('username').value=="")
+    {
+      alert("Please Enter You Name");
+    }
+    else{
+    document.forms["myForm"].submit();
+    }
+  }
+
     var el = document.getElementById('sketchpad');
     var pad = new Sketchpad(el);
 
