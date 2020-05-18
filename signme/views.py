@@ -29,6 +29,6 @@ def home(request):
         #     f.write(data)
         print('image save')
         loc=str(d.stamp)
-        return render(request,'signme/index.html',{"loc":loc})
+        return render(request,'signme/home.html',{"loc":loc})
     else:
         return render(request,'signme/home.html')
